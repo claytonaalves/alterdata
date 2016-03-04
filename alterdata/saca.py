@@ -45,7 +45,7 @@ class Registro(object):
         self.linha.write(campo)
 
     def __str__(self):
-        return self.linha.getvalue()
+        return self.linha.getvalue()+'\n'
 
 
 # No registro "tipo 1", os campos relativos a remetente e destinatário somente
@@ -106,7 +106,7 @@ class Registro01(Registro):
         self.adiciona_campo(Campo('CEP do remetente', 607, 8, 'N', nota.cep_emitente))
         self.adiciona_campo(Campo('UF do remetente', 615, 2, 'A', nota.uf_emitente))
         self.adiciona_campo(Campo('Telefone do remetente', 617, 12, 'A', nota.telefone_emitente))
-        self.adiciona_campo(Campo('CNPJ/CPF do remetente', 629, 14, 'N', nota.cnpj_emitente))
+        self.adiciona_campo(Campo('CNPJ/CPF do remetente', 629, 14, 'N', int(nota.cnpj_emitente)))
         self.adiciona_campo(Campo('Insc. Estadual do remetente', 643, 16, 'A', nota.ie_emitente))
         #self.adiciona_campo(Campo('Conta (código no plano de contas) do remetente', 659, 5, 'A'))
         #self.adiciona_campo(Campo('Código ou CNPJ do consignatário', 664, 16, 'A'))
@@ -129,7 +129,7 @@ class Registro02(Registro):
     def __init__(self, nota):
         super(Registro02, self).__init__(self)
 
-        self.adiciona_campo('Observação da NF', 1, 250, 'A', ' ')
+        self.adiciona_campo(Campo('Observação da NF', 1, 250, 'A', ' '))
 
 # 11. No Registro "tipo 3" as informações Base, Alíquota e Valor do Diferencial só
 # devem ser preenchidas em códigos fiscais de Entrada, estes códigos devem
@@ -236,7 +236,7 @@ class Registro03(Registro):
         #self.adiciona_campo(Campo('Número AIDF', 749, 20, 'A'))
         #self.adiciona_campo(Campo('Ano AIDF', 769, 4, 'N'))
         #self.adiciona_campo(Campo('Código de Situação do Documento', 773, 2, 'A'))
-        self.adiciona_campo(Campo('Tipo de Pagamento', 775, 1, [0, 1], 0)) # 0 – à vista ou 1 – a prazo
+        self.adiciona_campo(Campo('Tipo de Pagamento', 775, 1, ['0', '1'], '0')) # 0 – à vista ou 1 – a prazo
         #self.adiciona_campo(Campo('Valor de Cancelamento do ISSQN', 776, 12, 'N'))
         #self.adiciona_campo(Campo('Valor de Cancelamento do ICMS', 788, 12, 'N'))
         #self.adiciona_campo(Campo('Valor de Desconto do ISSQN', 800, 12, 'N'))
@@ -246,7 +246,7 @@ class Registro03(Registro):
         #self.adiciona_campo(Campo('Código do Tipo de Receita (Simples Nacional)', 848, 3, 'A'))
         #self.adiciona_campo(Campo('Código Consignatário', 851, 16, 'A'))
 
-        self.adiciona_campo(Campo('Campo para criar espaçamento', 851, 16, 'A')) # este campo não existe na documentação
+        self.adiciona_campo(Campo('Campo para criar espaçamento', 851, 16, 'A', ' ')) # este campo não existe na documentação
 
 
 class Registro04(Registro):
@@ -257,8 +257,7 @@ class Registro04(Registro):
         #self.adiciona_campo(Campo('Código de IPI (classificação fiscal - NBM/SH)', 1, 20, 'A'))
         #self.adiciona_campo(Campo('Unidade (KG,TN, M2,M3,etc.)', 21, 03, 'A'))
         #self.adiciona_campo(Campo('Quantidade (3 decimais)', 24, 10, 'N'))
-        self.adiciona_campo(Campo('Valor Bruto (Quantidade x Valor Unitário)', 34, 12, 'N'))
-
+        self.adiciona_campo(Campo('Valor Bruto (Quantidade x Valor Unitário)', 34, 12, 'N', int(round(nota.valor_total*100))))
         #self.adiciona_campo(Campo('Valor do IPI', 46, 10, 'N'))
         #self.adiciona_campo(Campo('Código situação tributária', 56, 03, 'N'))
         #self.adiciona_campo(Campo('Código do Produto', 59, 05, 'N'))
@@ -285,6 +284,7 @@ class Registro04(Registro):
         #self.adiciona_campo(Campo('Código Contábil do Produto (DIEF CE)', 266, 15, 'A'))
         #self.adiciona_campo(Campo('Descrição Contábil do Produto (DIEF CE)', 281, 50, 'A' ))
 
+        self.adiciona_campo(Campo('Campo para criar espaçamento', 281, 50, 'A', ' ')) # este campo não existe na documentação
 
 class Registro05(Registro):
 
@@ -309,9 +309,7 @@ class Registro05(Registro):
         #self.adiciona_campo(Campo('Código do Lanç. Automático p/Valor do ISS', 122, 5, 'A'))
         #self.adiciona_campo(Campo('Código do Lanç. Automático p/Valor do Material (SP)', 127, 5, 'A'))
         #self.adiciona_campo(Campo('Código do Lanç. Automático p/Valor de IRRF', 132, 5, 'A'))
-        #self.adiciona_campo(Campo('Registro seqüencial', 137, 6, 'N'))
-        #self.adiciona_campo(Campo('Código ou CNPJ do Cliente', 143, 16, 'N'))
-        #self.adiciona_campo(Campo('Nome', 159, 40, 'A'))
+        #self.adiciona_campo(Campo('Registro seqüencial', 137, 6, 'N')) #self.adiciona_campo(Campo('Código ou CNPJ do Cliente', 143, 16, 'N')) #self.adiciona_campo(Campo('Nome', 159, 40, 'A'))
         #self.adiciona_campo(Campo('Endereço', 199, 40, 'A'))
         #self.adiciona_campo(Campo('Bairro', 239, 15, 'A'))
         #self.adiciona_campo(Campo('Cidade', 254, 15, 'A'))
@@ -379,6 +377,7 @@ class Registro05(Registro):
         #self.adiciona_campo(Campo('Cód do município IBGE', 1075, 7, 'N'))
         #self.adiciona_campo(Campo('Código do Tipo de Receita (Simples Nacional)', 1082, 3, 'A'))
 
+        self.adiciona_campo(Campo('Campo para criar espaçamento', 1082, 3, 'A', ' ')) # este campo não existe na documentação
 
 class LayoutSACA:
 
@@ -390,11 +389,11 @@ class LayoutSACA:
         self.contador_notas += 1
         nota.sequencial = self.contador_notas 
 
-        self.arquivo.write(Registro01(nota))
-        self.arquivo.write(Registro02(nota))
-        self.arquivo.write(Registro03(nota))
-        self.arquivo.write(Registro04(nota))
-        self.arquivo.write(Registro05(nota))
+        self.arquivo.write(str(Registro01(nota)))
+        self.arquivo.write(str(Registro02(nota)))
+        self.arquivo.write(str(Registro03(nota)))
+        self.arquivo.write(str(Registro04(nota)))
+        self.arquivo.write(str(Registro05(nota)))
 
     def grava(self):
         self.arquivo.close()
