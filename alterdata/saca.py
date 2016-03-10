@@ -30,7 +30,7 @@ class Campo:
             format_str = "{{0:0{0}}}".format(self.tamanho)
             return format_str.format(self.valor)
         elif self.tipo=='A':
-            format_str = "{{0:{0}}}".format(self.tamanho)
+            format_str = "{{0:.{0}}}".format(self.tamanho)
             return format_str.format(self.valor.upper())
 
 
@@ -60,13 +60,16 @@ class Registro01(Registro):
         self.adiciona_campo(Campo('Especie NF', 6, 5, 'A', nota.especie_nf))
         self.adiciona_campo(Campo('Serie NF', 11, 5, 'A', nota.serie_nf))
         self.adiciona_campo(Campo('Numero NF', 16, 13, 'A', nota.numero))
-        #self.adiciona_campo(Campo('Codigo Fiscal', 29, 3, 'N', nota.codigo_fiscal))
+        self.adiciona_campo(Campo('Codigo Fiscal', 29, 3, 'N', nota.codigo_fiscal))
         self.adiciona_campo(Campo('Data de Emissão (DDMMAA)', 32, 6, 'N', nota.data_emissao))
         self.adiciona_campo(Campo('Data de Entrada/Saída (DDMMAA)', 38, 6, 'N', nota.data_entrada_saida))
-        #self.adiciona_campo(Campo('Código Contábil UM', 44, 5, 'A'))
-        #self.adiciona_campo(Campo('Código Contábil DOIS', 49, 5, 'A'))
-        #self.adiciona_campo(Campo('Código Contábil TRÊS', 54, 5, 'A'))
-        self.adiciona_campo(Campo('Código ou CNPJ do Fornecedor ou Cliente', 59, 16, 'N', nota.cnpj_cliente))
+        self.adiciona_campo(Campo('Código Contábil UM', 44, 5, 'A', nota.codigo_contabil_um))
+        self.adiciona_campo(Campo('Código Contábil DOIS', 49, 5, 'A', nota.codigo_contabil_dois))
+        self.adiciona_campo(Campo('Código Contábil TRÊS', 54, 5, 'A', nota.codigo_contabil_tres))
+
+        # Na documentação da alterdata este campo está como Numérico mas no arquivo de exemplo está como Alfanumérico
+        self.adiciona_campo(Campo('Código ou CNPJ do Fornecedor ou Cliente', 59, 16, 'A', nota.cnpj_cliente))
+
         self.adiciona_campo(Campo('Nome', 75, 40, 'A', nota.nome_cliente))
         self.adiciona_campo(Campo('Endereço', 115, 40, 'A', nota.endereco_cliente))
         self.adiciona_campo(Campo('Bairro', 155, 15, 'A', nota.bairro_cliente))
@@ -74,16 +77,27 @@ class Registro01(Registro):
         self.adiciona_campo(Campo('CEP', 185, 8, 'N', nota.cep_cliente))
         self.adiciona_campo(Campo('UF', 193, 2, 'A', nota.uf_cliente))
         self.adiciona_campo(Campo('Telefone', 195, 12, 'A', nota.telefone_cliente))
-        self.adiciona_campo(Campo('CNPJ/CPF', 207, 14, 'N', nota.cnpj_cliente))
-        #self.adiciona_campo(Campo('Inscrição Estadual', 221, 16, 'A'))
+
+        # Na documentação da alterdata este campo está como Numérico mas no arquivo de exemplo está como Alfanumérico
+        self.adiciona_campo(Campo('CNPJ/CPF', 207, 14, 'A', nota.cnpj_cliente))
+
+        self.adiciona_campo(Campo('Inscrição Estadual', 221, 16, 'A', nota.ie_cliente))
         #self.adiciona_campo(Campo('Conta (código no plano de contas)', 237, 5, 'A'))
-        self.adiciona_campo(Campo('Código da Natureza das operações', 242, 3, 'N', nota.cfop))
+
+        # Na documentação da alterdata este campo está como Numérico mas no arquivo de exemplo está como Alfanumérico
+        self.adiciona_campo(Campo('Código da Natureza das operações', 242, 3, 'A', nota.natureza_operacao))
+
         self.adiciona_campo(Campo('Tipo da Nota: Entrada ou Saída', 245, 1, ['E', 'S'], nota.tipo))
         self.adiciona_campo(Campo('Registro Seqüencial para cada NF', 246, 6, 'N', nota.sequencial))
-        #self.adiciona_campo(Campo('Cancelamento ou Exclusão de notas', 252, 1, 'C ou E'))
+
+        # Especificado incorretamente na documentação da alterdata
+        self.adiciona_campo(Campo('Cancelamento ou Exclusão de notas', 252, 1, 'A', 'N'))
+
         self.adiciona_campo(Campo('Código Fiscal (usar para cfop de 4 digitos)', 253, 4, 'N', nota.cfop))
+
         #self.adiciona_campo(Campo('Conta (código no plano de contas)', 257, 10, 'A'))
-        #self.adiciona_campo(Campo('Código Contábil QUATRO (st)', 267, 5, 'A'))
+        self.adiciona_campo(Campo('Código Contábil QUATRO (st)', 267, 5, 'A', nota.codigo_contabil_quatro))
+
         #self.adiciona_campo(Campo('Código ou CNPJ do destinatário ou remente (*)', 272, 16, 'A'))
         #self.adiciona_campo(Campo('Nome do destinatário ou remetente (*)', 288, 40, 'A'))
         #self.adiciona_campo(Campo('Endereço do destinatário ou remetente (*)', 328, 40, 'A'))
@@ -96,18 +110,20 @@ class Registro01(Registro):
         #self.adiciona_campo(Campo('Insc. Estadual do destinatário ou remetente (*)', 434, 16, 'A'))
         #self.adiciona_campo(Campo('Conta (código no plano de contas) do destinatário ou remetente (*)', 450, 5, 'A'))
         self.adiciona_campo(Campo('Código do País', 455, 5, 'N', nota.codigo_pais))
-        #self.adiciona_campo(Campo('Inscrição Suframa', 460, 14, 'N'))
+
+        self.adiciona_campo(Campo('Inscrição Suframa', 460, 14, 'N', 0))
+
         self.adiciona_campo(Campo('Cód do município IBGE', 474, 7, 'N', nota.codigo_municipio_ibge))
-        self.adiciona_campo(Campo('Código ou CNPJ do remetente', 481, 16, 'A', nota.cnpj_emitente))
-        self.adiciona_campo(Campo('Nome do remetente', 497, 40, 'A', nota.nome_emitente))
-        self.adiciona_campo(Campo('Endereço do remetente', 537, 40, 'A', nota.endereco_emitente))
-        self.adiciona_campo(Campo('Bairro do remetente', 577, 15, 'A', nota.bairro_emitente))
-        self.adiciona_campo(Campo('Cidade do remetente', 592, 15, 'A', nota.cidade_emitente))
-        self.adiciona_campo(Campo('CEP do remetente', 607, 8, 'N', nota.cep_emitente))
-        self.adiciona_campo(Campo('UF do remetente', 615, 2, 'A', nota.uf_emitente))
-        self.adiciona_campo(Campo('Telefone do remetente', 617, 12, 'A', nota.telefone_emitente))
-        self.adiciona_campo(Campo('CNPJ/CPF do remetente', 629, 14, 'N', int(nota.cnpj_emitente)))
-        self.adiciona_campo(Campo('Insc. Estadual do remetente', 643, 16, 'A', nota.ie_emitente))
+        #self.adiciona_campo(Campo('Código ou CNPJ do remetente', 481, 16, 'A', nota.cnpj_emitente))
+        #self.adiciona_campo(Campo('Nome do remetente', 497, 40, 'A', nota.nome_emitente))
+        #self.adiciona_campo(Campo('Endereço do remetente', 537, 40, 'A', nota.endereco_emitente))
+        #self.adiciona_campo(Campo('Bairro do remetente', 577, 15, 'A', nota.bairro_emitente))
+        #self.adiciona_campo(Campo('Cidade do remetente', 592, 15, 'A', nota.cidade_emitente))
+        #self.adiciona_campo(Campo('CEP do remetente', 607, 8, 'N', nota.cep_emitente))
+        #self.adiciona_campo(Campo('UF do remetente', 615, 2, 'A', nota.uf_emitente))
+        #self.adiciona_campo(Campo('Telefone do remetente', 617, 12, 'A', nota.telefone_emitente))
+        #self.adiciona_campo(Campo('CNPJ/CPF do remetente', 629, 14, 'N', int(nota.cnpj_emitente)))
+        #self.adiciona_campo(Campo('Insc. Estadual do remetente', 643, 16, 'A', nota.ie_emitente))
         #self.adiciona_campo(Campo('Conta (código no plano de contas) do remetente', 659, 5, 'A'))
         #self.adiciona_campo(Campo('Código ou CNPJ do consignatário', 664, 16, 'A'))
         #self.adiciona_campo(Campo('Nome do consignatário', 680, 40, 'A'))
@@ -121,7 +137,8 @@ class Registro01(Registro):
         #self.adiciona_campo(Campo('Insc. Estadual do consignatário', 826, 16, 'A'))
         #self.adiciona_campo(Campo('Conta (código no plano de contas) do consignatário', 842, 5, 'A'))
 
-        self.adiciona_campo(Campo('Campo para criar espaçamento', 842, 5, 'A', ' ')) # este campo não existe na documentação
+        # este campo não existe na documentação
+        self.adiciona_campo(Campo('Campo para criar espaçamento', 892, 13, 'N', 0)) 
 
 
 class Registro02(Registro):
@@ -129,7 +146,7 @@ class Registro02(Registro):
     def __init__(self, nota):
         super(Registro02, self).__init__(self)
 
-        self.adiciona_campo(Campo('Observação da NF', 1, 250, 'A', ' '))
+        self.adiciona_campo(Campo('Observação da NF', 1, 250, 'A', ' '*250))
 
 # 11. No Registro "tipo 3" as informações Base, Alíquota e Valor do Diferencial só
 # devem ser preenchidas em códigos fiscais de Entrada, estes códigos devem
@@ -149,9 +166,9 @@ class Registro03(Registro):
     def __init__(self, nota):
         super(Registro03, self).__init__(self)
 
-        self.adiciona_campo(Campo('Valor Contábil', 1, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Contábil', 1, 12, 'N', nota.valor_total))
         self.adiciona_campo(Campo('ICMS Isentas', 13, 12, 'N', 0))
-        self.adiciona_campo(Campo('ICMS Outras', 25, 12, 'N', 0))
+        self.adiciona_campo(Campo('ICMS Outras', 25, 12, 'N', nota.valor_total))
         self.adiciona_campo(Campo('ICMS Base', 37, 12, 'N', 0))
         self.adiciona_campo(Campo('ICMS Alíquota', 49, 4, 'N', 0))
         self.adiciona_campo(Campo('ICMS Valor', 53, 12, 'N', 0))
@@ -169,7 +186,7 @@ class Registro03(Registro):
         self.adiciona_campo(Campo('Valor das Despesas Acessórias', 189, 12, 'N', 0))
         self.adiciona_campo(Campo('Código CIF_FOB (1=CIF, 2=FOB)', 201, 1, 'N', 0))
         self.adiciona_campo(Campo('Código de Modelo Fiscal', 202, 2, 'A', nota.modelo))
-        #self.adiciona_campo(Campo('Identifica nota de Combustível (S/N)', 204, 204, 'A'))
+        self.adiciona_campo(Campo('Identifica nota de Combustível (S/N)', 204, 204, 'A', 'N'))
         #self.adiciona_campo(Campo('Código Situação Tributária Federal', 205, 5, 'A'))
         #self.adiciona_campo(Campo('Cesta Básica (ES) (S/N)', 210, 1, 'A'))
         self.adiciona_campo(Campo('Base do Diferencial', 211, 13, 'N', 0))
@@ -177,48 +194,53 @@ class Registro03(Registro):
         self.adiciona_campo(Campo('Valor do Diferencial', 230, 13, 'N', 0))
         #self.adiciona_campo(Campo('Ajuste ICMS', 243, 1, 'A'))
         #self.adiciona_campo(Campo('Ajuste IPI', 244, 1, 'A'))
-        #self.adiciona_campo(Campo('Código ECF', 245, 3, 'A'))
-        #self.adiciona_campo(Campo('Contador Redução Z', 248, 6, 'N'))
-        #self.adiciona_campo(Campo('Valor Total Inicial', 254, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor Total Final', 266, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de venda (NF entrada)', 278, 12, 'N'))
-        #self.adiciona_campo(Campo('Desoneração Industria Naval (RJ) (S/N)', 290, 1, 'A'))
-        #self.adiciona_campo(Campo('Valor Cancelamento', 291, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor Descontos', 303, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor ISSQN', 315, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor Abatimento da base do IR', 327, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor Abatimento da base do CSLL', 339, 12, 'N'))
-        #self.adiciona_campo(Campo('Status ICMS Antecipado', 351, 1, 'A'))
-        #self.adiciona_campo(Campo('Status ICMS na Fonte', 352, 1, 'A'))
-        #self.adiciona_campo(Campo('Status ICMS Valor Recolhido', 353, 1, 'A'))
-        #self.adiciona_campo(Campo('Base ICMS interest.(Sub.Trib Interna RJ e GO)', 354, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor ICMS interest.  (Sub.Trib Interna RJ e GO)', 366, 12, 'N'))
-        #self.adiciona_campo(Campo('ICMS Normal (GO)', 378, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de venda Bruta', 390, 12, 'N'))
-        #self.adiciona_campo(Campo('Contador de reinício', 402, 6, 'N'))
-        #self.adiciona_campo(Campo('Valor do Frete', 408, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor do Seguro', 420, 12, 'N'))
-        #self.adiciona_campo(Campo('Código da Embarcação (*)', 432, 4, 'N'))
+        self.adiciona_campo(Campo('Código ECF', 245, 3, 'A', "000"))
+        self.adiciona_campo(Campo('Contador Redução Z', 248, 6, 'N', 0))
+        self.adiciona_campo(Campo('Valor Total Inicial', 254, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Total Final', 266, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de venda (NF entrada)', 278, 12, 'N', 0))
+        self.adiciona_campo(Campo('Desoneração Industria Naval (RJ) (S/N)', 290, 1, 'A', "N"))
+        self.adiciona_campo(Campo('Valor Cancelamento', 291, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Descontos', 303, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor ISSQN', 315, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Abatimento da base do IR', 327, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Abatimento da base do CSLL', 339, 12, 'N', 0))
+        self.adiciona_campo(Campo('Status ICMS Antecipado', 351, 1, 'A', "N"))
+        self.adiciona_campo(Campo('Status ICMS na Fonte', 352, 1, 'A', "S"))
+        self.adiciona_campo(Campo('Status ICMS Valor Recolhido', 353, 1, 'A', "N"))
+        self.adiciona_campo(Campo('Base ICMS interest.(Sub.Trib Interna RJ e GO)', 354, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor ICMS interest.  (Sub.Trib Interna RJ e GO)', 366, 12, 'N', 0))
+        self.adiciona_campo(Campo('ICMS Normal (GO)', 378, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de venda Bruta', 390, 12, 'N', 0))
+        self.adiciona_campo(Campo('Contador de reinício', 402, 6, 'N', 0))
+        self.adiciona_campo(Campo('Valor do Frete', 408, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor do Seguro', 420, 12, 'N', 0))
+        self.adiciona_campo(Campo('Código da Embarcação (*)', 432, 4, 'N', 0))
         #self.adiciona_campo(Campo('Descrição da Embarcação', 436, 40, 'A'))
-        #self.adiciona_campo(Campo('Alíquota FECP-RJ', 476, 6, 'A'))
+
+        # Documentado incorretamente na documentação da alterdata
+        self.adiciona_campo(Campo('Alíquota FECP-RJ', 476, 6, 'N', 100))
+
         #self.adiciona_campo(Campo('Código Remetente', 482, 16, 'A'))
         #self.adiciona_campo(Campo('Código Destinatário', 498, 16, 'A'))
-        #self.adiciona_campo(Campo('Tomador (R)emetente ou (D)estinatário ou (C) onsignatário', 514, 1, 'A'))
-        #self.adiciona_campo(Campo('Data Emissão da Nota Fiscal atrelada ao CT', 515, 6, 'N'))
+        self.adiciona_campo(Campo('Tomador (R)emetente ou (D)estinatário ou (C)onsignatário', 514, 1, 'A', "R"))
+        self.adiciona_campo(Campo('Data Emissão da Nota Fiscal atrelada ao CT', 515, 6, 'N', 0))
         #self.adiciona_campo(Campo('Modelo da Nota Fiscal atrelada ao CT', 521, 2, 'A'))
         #self.adiciona_campo(Campo('Série da Nota Fiscal atrelada ao CT', 523, 5, 'A'))
         #self.adiciona_campo(Campo('Número da Nota Fiscal atrelada ao CT', 528, 6, 'A'))
-        #self.adiciona_campo(Campo('Valor Contábil da Nota Fiscal atrelada ao CT', 534, 12, 'N'))
+        self.adiciona_campo(Campo('Valor Contábil da Nota Fiscal atrelada ao CT', 534, 12, 'N', 0))
         #self.adiciona_campo(Campo('Código da antecipação tributária (1a5 ou vazio)', 546, 1, 'A'))
-        #self.adiciona_campo(Campo('Valor da Parcela Reduzida (GO)', 547, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor da Parcela Não Tributada (GO)', 559, 12, 'N'))
-        #self.adiciona_campo(Campo('Número do caixa (DIEF CE)', 571, 4, 'N'))
-        #self.adiciona_campo(Campo('Cód. Operação Doc. Fiscal (DIEF CE)', 575, 2, 'N'))
-        #self.adiciona_campo(Campo('Cód. Situação Doc. Fiscal (DIEF CE)', 577, 2, 'N'))
-        #self.adiciona_campo(Campo('Cód. Condição Participante (DIEF CE)', 579, 2, 'N'))
-        #self.adiciona_campo(Campo('Cód. Motivo Referência Doc.  Fiscal (DIEF CE)', 581, 2, 'N'))
-        #self.adiciona_campo(Campo('Cód. Número Segurança (DIEF CE)', 583, 2, 'N'))
-        #self.adiciona_campo(Campo('Cód. Município (DIEF CE)', 585, 5, 'N'))
+
+        self.adiciona_campo(Campo('Valor da Parcela Reduzida (GO)', 547, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor da Parcela Não Tributada (GO)', 559, 12, 'N', 0))
+        self.adiciona_campo(Campo('Número do caixa (DIEF CE)', 571, 4, 'N', 0))
+        self.adiciona_campo(Campo('Cód. Operação Doc. Fiscal (DIEF CE)', 575, 2, 'N', 0))
+        self.adiciona_campo(Campo('Cód. Situação Doc. Fiscal (DIEF CE)', 577, 2, 'N', 0))
+        self.adiciona_campo(Campo('Cód. Condição Participante (DIEF CE)', 579, 2, 'N', 0))
+        self.adiciona_campo(Campo('Cód. Motivo Referência Doc.  Fiscal (DIEF CE)', 581, 2, 'N', 0))
+        self.adiciona_campo(Campo('Cód. Número Segurança (DIEF CE)', 583, 2, 'N', 0))
+        self.adiciona_campo(Campo('Cód. Município (DIEF CE)', 585, 5, 'N', 0))
+
         #self.adiciona_campo(Campo('Descrição Município (DIEF CE)', 590, 50, 'A'))
         #self.adiciona_campo(Campo('UF Município (DIEF CE)', 640, 2, 'A'))
         #self.adiciona_campo(Campo('Subsérie da Nota (DIEF CE)', 642, 3, 'A'))
@@ -227,26 +249,31 @@ class Registro03(Registro):
         #self.adiciona_campo(Campo('Subsérie Formulário (DIEF CE)', 658, 3, 'A'))
         #self.adiciona_campo(Campo('Número Inicial Formulário (DIEF CE)', 661, 10, 'A'))
         #self.adiciona_campo(Campo('Número Final Formulário (DIEF CE)', 671, 10, 'A'))
-        #self.adiciona_campo(Campo('Valor Desconto Global (DIEF CE)', 681, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor Antecipado (DIEF CE)', 693, 12, 'N'))
-        #self.adiciona_campo(Campo('ICMS Antecipado (DIEF CE)', 705, 12, 'N'))
-        #self.adiciona_campo(Campo('Número Inicial Formulário (PI)', 717, 10, 'N'))
-        #self.adiciona_campo(Campo('Número Final Formulário (PI)', 727, 10, 'N'))
-        #self.adiciona_campo(Campo('Valor IPI não aproveitado', 737, 12, 'N'))
+
+        self.adiciona_campo(Campo('Valor Desconto Global (DIEF CE)', 681, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Antecipado (DIEF CE)', 693, 12, 'N', 0))
+        self.adiciona_campo(Campo('ICMS Antecipado (DIEF CE)', 705, 12, 'N', 0))
+        self.adiciona_campo(Campo('Número Inicial Formulário (PI)', 717, 10, 'N', 0))
+        self.adiciona_campo(Campo('Número Final Formulário (PI)', 727, 10, 'N', 0))
+        self.adiciona_campo(Campo('Valor IPI não aproveitado', 737, 12, 'N', 0))
+
         #self.adiciona_campo(Campo('Número AIDF', 749, 20, 'A'))
-        #self.adiciona_campo(Campo('Ano AIDF', 769, 4, 'N'))
-        #self.adiciona_campo(Campo('Código de Situação do Documento', 773, 2, 'A'))
+
+        self.adiciona_campo(Campo('Ano AIDF', 769, 4, 'N', 0))
+        self.adiciona_campo(Campo('Código de Situação do Documento', 773, 2, 'A', "00"))
         self.adiciona_campo(Campo('Tipo de Pagamento', 775, 1, ['0', '1'], '0')) # 0 – à vista ou 1 – a prazo
-        #self.adiciona_campo(Campo('Valor de Cancelamento do ISSQN', 776, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de Cancelamento do ICMS', 788, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de Desconto do ISSQN', 800, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de Desconto do ICMS', 812, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de Acréscimo do ISSQN', 824, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor de Acréscimo do ICMS', 836, 12, 'N'))
-        #self.adiciona_campo(Campo('Código do Tipo de Receita (Simples Nacional)', 848, 3, 'A'))
+        self.adiciona_campo(Campo('Valor de Cancelamento do ISSQN', 776, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de Cancelamento do ICMS', 788, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de Desconto do ISSQN', 800, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de Desconto do ICMS', 812, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de Acréscimo do ISSQN', 824, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor de Acréscimo do ICMS', 836, 12, 'N', 0))
+        self.adiciona_campo(Campo('Código do Tipo de Receita (Simples Nacional)', 848, 3, 'A', "1  "))
+
         #self.adiciona_campo(Campo('Código Consignatário', 851, 16, 'A'))
 
-        self.adiciona_campo(Campo('Campo para criar espaçamento', 851, 16, 'A', ' ')) # este campo não existe na documentação
+        # este campo não existe na documentação
+        self.adiciona_campo(Campo('Campo para criar espaçamento', 851, 381, 'A', ' '*1231)) 
 
 
 class Registro04(Registro):
@@ -254,37 +281,53 @@ class Registro04(Registro):
     def __init__(self, nota):
         super(Registro04, self).__init__(self)
 
-        #self.adiciona_campo(Campo('Código de IPI (classificação fiscal - NBM/SH)', 1, 20, 'A'))
-        #self.adiciona_campo(Campo('Unidade (KG,TN, M2,M3,etc.)', 21, 03, 'A'))
-        #self.adiciona_campo(Campo('Quantidade (3 decimais)', 24, 10, 'N'))
+        self.adiciona_campo(Campo('Código de IPI (classificação fiscal - NBM/SH)', 1, 20, 'A', nota.classificacao_fiscal))
+
+        # O valor desse campo está inconsistente com a documentação da alterdata
+        self.adiciona_campo(Campo('Unidade (KG,TN, M2,M3,etc.)', 21, 03, 'A', "011"))
+        self.adiciona_campo(Campo('Quantidade (3 decimais)', 24, 10, 'N', 1000))
         self.adiciona_campo(Campo('Valor Bruto (Quantidade x Valor Unitário)', 34, 12, 'N', int(round(nota.valor_total*100))))
-        #self.adiciona_campo(Campo('Valor do IPI', 46, 10, 'N'))
-        #self.adiciona_campo(Campo('Código situação tributária', 56, 03, 'N'))
-        #self.adiciona_campo(Campo('Código do Produto', 59, 05, 'N'))
-        #self.adiciona_campo(Campo('Base de Cálculo do ICMS Próprio', 64, 12, 'N'))
-        #self.adiciona_campo(Campo('Base de Cálculo do ICMS Subst. Tributaria/ Base de ICMS Agregação (DIEF CE)', 76, 12, 'N'))
-        #self.adiciona_campo(Campo('Vago', 88, 3, 'A'))
-        #self.adiciona_campo(Campo('Desconto', 91, 12, 'N'))
-        #self.adiciona_campo(Campo('Descrição do produto', 103, 35, 'A'))
-        #self.adiciona_campo(Campo('Código Prodepe/Funcresce (PE)', 138, 3, 'N'))
-        #self.adiciona_campo(Campo('Código Específico', 141, 14, 'A'))
+        self.adiciona_campo(Campo('Valor do IPI', 46, 10, 'N', 0))
+        self.adiciona_campo(Campo('Código situação tributária', 56, 03, 'N', 900))
+        self.adiciona_campo(Campo('Código do Produto', 59, 05, 'N', nota.codigo_produto))
+
+        self.adiciona_campo(Campo('Base de Cálculo do ICMS Próprio', 64, 12, 'N', 0))
+        self.adiciona_campo(Campo('Base de Cálculo do ICMS Subst. Tributaria/ Base de ICMS Agregação (DIEF CE)', 76, 12, 'N', 0))
+        self.adiciona_campo(Campo('Vago', 88, 3, 'A', "000"))
+        self.adiciona_campo(Campo('Desconto', 91, 12, 'N', 0))
+
+        self.adiciona_campo(Campo('Descrição do produto', 103, 35, 'A', nota.descricao_produto))
+        self.adiciona_campo(Campo('Código Prodepe/Funcresce (PE)', 138, 3, 'N', 0))
+        self.adiciona_campo(Campo('Código Específico', 141, 14, 'A', nota.codigo_especifico))
         #self.adiciona_campo(Campo('Número Ordem Doc. Fiscal (COO)', 155, 6, 'N'))
-        #self.adiciona_campo(Campo('Capacidade Volumétrica', 161, 5, 'N'))
-        #self.adiciona_campo(Campo('Valor ICMS Próprio (DIEF CE)', 166, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor ICMS Agregação (DIEF CE)', 178, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor IPI Isentas (DIEF CE)', 190, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor IPI Outros (DIEF CE)', 202, 12, 'N'))
-        #self.adiciona_campo(Campo('Qtd na Unidade Padrão (DIEF CE)', 214, 10, 'N'))
-        #self.adiciona_campo(Campo('Valor Unitário na Unidade (DIEF CE)', 224, 12, 'N'))
-        #self.adiciona_campo(Campo('Valor Unitário Bruto (DIEF CE)', 236, 12, 'N'))
-        #self.adiciona_campo(Campo('Tipo de ICMS Agregação (DIEF CE)', 248, 2, 'N'))
-        #self.adiciona_campo(Campo('Código do Valor Fiscal de ICMS (DIEF CE)', 250, 2, 'N'))
-        #self.adiciona_campo(Campo('Código do Valor Fiscal de IPI (DIEF CE)', 252, 2, 'N'))
-        #self.adiciona_campo(Campo('Base de IPI (DIEF CE)', 254, 12, 'N'))
+
+        self.adiciona_campo(Campo('Capacidade Volumétrica', 161, 5, 'N', 0))
+        self.adiciona_campo(Campo('Valor ICMS Próprio (DIEF CE)', 166, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor ICMS Agregação (DIEF CE)', 178, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor IPI Isentas (DIEF CE)', 190, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor IPI Outros (DIEF CE)', 202, 12, 'N', 0))
+        self.adiciona_campo(Campo('Qtd na Unidade Padrão (DIEF CE)', 214, 10, 'N', 0))
+        self.adiciona_campo(Campo('Valor Unitário na Unidade (DIEF CE)', 224, 12, 'N', 0))
+        self.adiciona_campo(Campo('Valor Unitário Bruto (DIEF CE)', 236, 12, 'N', 0))
+        self.adiciona_campo(Campo('Tipo de ICMS Agregação (DIEF CE)', 248, 2, 'N', 0))
+        self.adiciona_campo(Campo('Código do Valor Fiscal de ICMS (DIEF CE)', 250, 2, 'N', 0))
+        self.adiciona_campo(Campo('Código do Valor Fiscal de IPI (DIEF CE)', 252, 2, 'N', 0))
+        self.adiciona_campo(Campo('Base de IPI (DIEF CE)', 254, 12, 'N', 0))
+
         #self.adiciona_campo(Campo('Código Contábil do Produto (DIEF CE)', 266, 15, 'A'))
         #self.adiciona_campo(Campo('Descrição Contábil do Produto (DIEF CE)', 281, 50, 'A' ))
 
-        self.adiciona_campo(Campo('Campo para criar espaçamento', 281, 50, 'A', ' ')) # este campo não existe na documentação
+        # Daqui pra baixo foi feito baseado no arquivo de exemplo. A documentação do alterdata está
+        # completamente desatualizada.
+
+        self.adiciona_campo(Campo('Descrição do item da nota', 331, 53, 'A', nota.descricao_produto))
+        self.adiciona_campo(Campo('Numero em branco', 384, 7, 'N', 0))
+        self.adiciona_campo(Campo('Codigo do item da nota', 391, 2, 'N', nota.codigo_produto))
+        self.adiciona_campo(Campo('zeros', 407, 12, 'N', 0))
+        self.adiciona_campo(Campo('Numero desconhecido', 419, 3, 'N', 11))
+        self.adiciona_campo(Campo('zeros', 425, 14, 'N', 0))
+
+        #self.adiciona_campo(Campo('Campo para criar espaçamento', 281, 50, 'A', ' ')) # este campo não existe na documentação
 
 class Registro05(Registro):
 
@@ -393,7 +436,12 @@ class LayoutSACA:
         self.arquivo.write(str(Registro02(nota)))
         self.arquivo.write(str(Registro03(nota)))
         self.arquivo.write(str(Registro04(nota)))
-        self.arquivo.write(str(Registro05(nota)))
+
+        # Grava os outros itens da nota
+        for line in range(0, 29):
+            self.arquivo.write("                       0000000000000000000000000000000000000000000000000000000000000000000000000000000                                   000                    000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                      000000000              000000000000      00000000000000\n")
+
+        #self.arquivo.write(str(Registro05(nota)))
 
     def grava(self):
         self.arquivo.close()
