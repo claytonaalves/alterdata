@@ -166,9 +166,9 @@ class Registro03(Registro):
     def __init__(self, nota):
         super(Registro03, self).__init__(self)
 
-        self.adiciona_campo(Campo('Valor Contábil', 1, 12, 'N', nota.valor_total))
+        self.adiciona_campo(Campo('Valor Contábil', 1, 12, 'N', int(round(nota.valor_total*100))))
         self.adiciona_campo(Campo('ICMS Isentas', 13, 12, 'N', 0))
-        self.adiciona_campo(Campo('ICMS Outras', 25, 12, 'N', nota.valor_total))
+        self.adiciona_campo(Campo('ICMS Outras', 25, 12, 'N', int(round(nota.valor_total*100))))
         self.adiciona_campo(Campo('ICMS Base', 37, 12, 'N', 0))
         self.adiciona_campo(Campo('ICMS Alíquota', 49, 4, 'N', 0))
         self.adiciona_campo(Campo('ICMS Valor', 53, 12, 'N', 0))
