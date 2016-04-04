@@ -1,0 +1,9 @@
+*.gz
+*.swp
+*.pyc
+*.pdf
+*.rar
+*.xls
+*.zip
+*.mov
+tmp/*
